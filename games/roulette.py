@@ -1,36 +1,70 @@
+import random
+
 #FIXME tijdelijke variabelen
-amount_available = 50
+amount_available = 50.0
 name_first = "Jim"
 
-print("\nWelkom bij roulette!")
-print("-"*50)
-print("Inzetopties: 1 rood, 2 zwart, 3 even, 4 oneven, 0 stoppen.")
 
-def choice_move(amount_available):
+def choose_move():
     """
-    :param amount_available:    hoeveelheid geld beschikbaar om in te zetten
-    :return:                    nieuwe hoeveelheid geld beschikbaar
+    Geeft de speler een keuze waarop in te zetten
+    :return:        keuze voor inzet (indien geldig)
     """
-
     while True:
-        choice_move = int(input("Waarop wilt u inzetten? "))
-        if not (choice_move == 0 or choice_move == 1 or choice_move == 2 or choice_move == 3 or choice_move == 4):
-            print("Dat is geen geldige keuze.")
-            continue
-        if choice_move == 0:
-            print(f"Bedankt voor het spelen, {name_first.capitalize()}! Hopelijk tot snel.")
-            break
-        amount_wager = float(input("Hoeveel euro wilt u inzetten? "))
-        if amount_wager <= 0 or amount_wager > amount_available:
-            print("Dat is geen geldig bedrag.")
-            continue
+        print("""\n
+        Inzetopties:
+            1. Rood
+            2. Zwart
+            3. Even
+            4. Oneven
+            0. Terug.""")
+        choice_move = int(input("\nWaarop wilt u inzetten? "))
+        if choice_move in (0, 1, 2, 3, 4):
+            return choice_move
         else:
-            return amount_available - amount_wager
-            break
+            print("Dat is geen geldige keuze.")
 
-amount_available = choice_move(amount_available)
-print(amount_available)
 
+def choose_wager(amount_available):
+    choice_wager = float(input("\nHoeveel wilt u inzetten? €"))
+    if choice_wager <= amount_available:
+        return choice_wager
+    else:
+        print(f"Dat is meer dan u beschikbaar heeft (€{amount_available})")
+        choose_wager(amount_available)
+
+
+def determine_win(choice_move, amount_wager):
+    pass
+
+
+def game_roulette(amount_available):
+    print("\nWelkom bij roulette!")
+    print("-" * 50)
+    while True:
+        choice_move = choose_move()
+        amount_wager = choose_wager(amount_available)
+        determine_win(choice_move, amount_available)
+
+
+
+
+
+
+
+if not (choose_move == 0 or choose_move == 1 or choose_move == 2 or choose_move == 3 or choose_move == 4):
+    print("Dat is geen geldige keuze.")
+    continue
+if choose_move == 0:
+    print(f"Bedankt voor het spelen, {name_first.capitalize()}! Hopelijk tot snel.")
+    break
+amount_wager = float(input("Hoeveel euro wilt u inzetten? "))
+if amount_wager <= 0 or amount_wager > amount_available:
+    print("Dat is geen geldig bedrag.")
+    continue
+else:
+    return amount_available - amount_wager
+    break
 
 # #    spin = (number_round * 7) % 37
 # spin = random.randint(1, 36)

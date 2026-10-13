@@ -1,8 +1,7 @@
 # Verwerkingsopdracht week 3 Martijn de Wild
 # Exit codes: 1 = gebruiker te jong | 2 = te weinig budget
 
-import random
-
+import games.roulette
 
 def check_age(date_birth):
     """
@@ -10,9 +9,9 @@ def check_age(date_birth):
     :param date_birth: date of player birth "dd-mm-yyyy"
     :return: True if older, False if younger
     """
-
     date_day_birth, date_month_birth, date_year_birth = date_birth.split("-")
-    return True if int(date_year_current) - int(date_year_birth) < 18 else False
+    return True if int(DATE_YEAR_CURRENT) - int(date_year_birth) > AGE_LEGAL else False
+
 
 def determine_salutation():
     """
@@ -22,7 +21,7 @@ def determine_salutation():
     global name_last, name_first, preference_address
     name_last = input("Wat is uw achternaam? ").capitalize()
     name_first = input("Wat is uw voornaam? ").capitalize()
-    preference_gender = input("Wat is uw gewenste aanspreekvorm (m/v/x)? ")
+    preference_gender = input("Wat is uw gewenste aanspreekvorm (kies uit m/v/x)? ")
     if preference_gender == "m":
         preference_address = "hr."
     elif preference_gender == "v":
@@ -32,52 +31,96 @@ def determine_salutation():
     else:
         preference_address = ""
 
-def determine_date_birth():
-    """
-    Queries player's date of birth
-    :return:
-    """
 
-determine_salutation()
-print(preference_address, name_first, name_last)
+def amount_available_check(amount_start, surcharge_total):
+    return True if (amount_start - surcharge_total) > AMOUNT_WAGER_MIN else False
 
 
+def show_welcome_message(amount_start, surcharge_total, amount_available):
+    print("\nOverzicht")
+    print("-"*50)
+    print(f"""{preference_address} {name_last}
+        Startbudget:    €{"{:.2f}".format(amount_start)}
+        Vaste kosten:   €{"{:.2f}".format(surcharge_total)}
+        Speelbudget:    €{"{:.2f}".format(amount_available)}""")
 
-# surcharge_entry = 1.50
-# surcharge_admin = 0.63
-# surcharge_tax = 3.00
-# age_min = 18
-# date_year_current = 2026
-#
-# print("\nWelkom bij Casino De Gouden Driehoek, waar geld niet gelukkig maakt.\nLaten we beginnen met het aanmaken van een gebruikersaccount.")
-# name_last = input("Wat is uw achternaam? ")
-# name_first = input("Wat is uw voornaam? ")
-# preference_gender = input("Wat is uw gewenste aanspreekvorm (m/v/x)? ")
-# if preference_gender == "m":
-#     preference_address = "hr."
-# elif preference_gender == "v":
-#     preference_address = "mevr."
-# elif preference_gender == "x":
-#     preference_address = "mx."
-# else: preference_address = ""
-#
-# # TODO hoofdletters bij voorvoegsels corrigeren
-# print(f"\nGeachte {preference_address} {name_last.title()}, beste {name_first.capitalize()}, welkom in het casino!\nVoordat we verder gaan, hebben we nog wat meer informatie nodig.")
-#
-# # TODO invoerdomeinen beperken, rekenen met maanden en jaren
-# date_birth = input("Wat is uw geboortedatum (dd-mm-yyyy)? ")
-#
-#
-# amount_player_start = float(input("Wat is uw startbudget in €? "))
-# print("\nUw gegevens samengevat")
-# print("-"*50)
-# print(f"Naam:\t\t\t\t\t\t{preference_address} {name_first.capitalize()} {name_last.title()}")
-# print(f"Geboortedatum:\t\t\t\t{date_birth}")
-# print(f"Startbudget:\t\t\t\t€ {"{:.2f}".format(amount_player_start)}")
-# print(f"Vaste kosten per sessie:\t€ {"{:.2f}".format(surcharge_entry + surcharge_admin + surcharge_tax)}")
-# amount_available = amount_player_start - surcharge_entry - surcharge_admin - surcharge_tax
-# print(f"Speelsaldo:\t\t\t\t\t€ {"{:.2f}".format(amount_available)}")
-# print("\nSpeelsaldo is", "voldoende" if amount_available >= 10.0 else "onvoldoende", "voor toegang")
-# if amount_available < 0:
-#     exit(2)
 
+def show_menu_main():
+    print("\nHoofdmenu")
+    print("-" * 50)
+    print("""
+        1. Spellen
+        2. Saldo
+        3. Account
+        0. Stop""")
+    return int(input("\nMaak uw keuze: "))
+
+
+def show_menu_games():
+    print("\nSpellen")
+    print("-" * 50)
+    print("""
+        1. Fruitmachine
+        2. Roulette
+        0. Terug""")
+    return int(input("\nMaak uw keuze: "))
+
+
+def show_saldo(amount_available):
+    print(f"Saldo is €{"{:.2f}".format(amount_available)}")
+
+
+def show_account():
+    print(preference_address, name_first, name_last)
+
+
+def main():
+    date_birth = input("Om toegelaten te worden moet u 18 jaar of ouder zijn. Wat is uw geboortedatum (dd-mm-yyyy)? ")
+    if check_age(date_birth):
+        print("welkom in Casino de Gouden Driehoek, waar geld wél gelukkig maakt!")
+    else:
+        print("Helaas bent u niet oud genoeg om te spelen.")
+        exit(1)
+
+    determine_salutation()
+    surcharge_total = SURCHARGE_ENTRY + SURCHARGE_ADMIN + SURCHARGE_TAX
+    amount_start = int(input(f"Geachte {preference_address} {name_last}, beste {name_first}, wat is uw startbudget in euro? €"))
+    if not amount_available_check(amount_start, surcharge_total):
+        print("Helaas is dat niet genoeg geld om te spelen.")
+        exit(2)
+    amount_available = amount_start - surcharge_total
+    show_welcome_message(amount_start, surcharge_total, amount_available)
+
+    while True:
+        menu_main_choice = show_menu_main()
+        if menu_main_choice == 1:
+            while True:
+                menu_games_choice = show_menu_games()
+                if menu_games_choice == 1:
+                    game_slots()
+                elif menu_games_choice == 2:
+                    game_roulette()
+                elif menu_games_choice == 0:
+                    break
+                else:
+                    print("Dat is geen geldige keuze.")
+        elif menu_main_choice == 2:
+            show_saldo(amount_available)
+        elif menu_main_choice == 3:
+            show_account()
+        elif menu_main_choice == 0:
+            print(f"Bedankt voor het spelen, {name_first}, en tot snel!")
+            exit()
+        else:
+            print("Dat is geen geldige optie.")
+
+
+
+AGE_LEGAL = 18
+DATE_YEAR_CURRENT = 2026
+SURCHARGE_ENTRY = 1.50
+SURCHARGE_ADMIN = 0.63
+SURCHARGE_TAX = 3.00
+AMOUNT_WAGER_MIN = 1.00
+
+main()
