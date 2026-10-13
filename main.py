@@ -1,6 +1,5 @@
 # Verwerkingsopdracht week 3 Martijn de Wild
 # Exit codes: 1 = gebruiker te jong | 2 = te weinig budget
-# Onopgelost probleem: een float invullen als inzet geeft een conflict
 
 from games import roulette, slots
 
