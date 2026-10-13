@@ -1,7 +1,9 @@
 # Verwerkingsopdracht week 3 Martijn de Wild
 # Exit codes: 1 = gebruiker te jong | 2 = te weinig budget
+# Onopgelost probleem: een float invullen als inzet geeft een conflict
 
-from games import roulette
+from games import roulette, slots
+
 
 def check_age(date_birth):
     """
@@ -73,7 +75,7 @@ def show_saldo(amount_available):
 
 def show_account(date_birth):
     print(f"""
-    Account van:    {preference_address}, {name_first}, {name_last}
+    Account van:    {preference_address} {name_first} {name_last}
     Geboortedatum:  {date_birth}""")
 
 
@@ -100,7 +102,7 @@ def main():
             while True:
                 menu_games_choice = show_menu_games()
                 if menu_games_choice == 1:
-                    game_slots()
+                    amount_available = slots.game_slots(amount_available)
                 elif menu_games_choice == 2:
                     amount_available = roulette.game_roulette(amount_available)
                 elif menu_games_choice == 0:
@@ -116,7 +118,6 @@ def main():
             exit()
         else:
             print("Dat is geen geldige optie.")
-
 
 
 AGE_LEGAL = 18
