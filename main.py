@@ -1,7 +1,7 @@
 # Verwerkingsopdracht week 3 Martijn de Wild
 # Exit codes: 1 = gebruiker te jong | 2 = te weinig budget
 
-import games.roulette
+from games import roulette
 
 def check_age(date_birth):
     """
@@ -39,7 +39,8 @@ def amount_available_check(amount_start, surcharge_total):
 def show_welcome_message(amount_start, surcharge_total, amount_available):
     print("\nOverzicht")
     print("-"*50)
-    print(f"""{preference_address} {name_last}
+    print(f"""
+        {preference_address} {name_last}
         Startbudget:    €{"{:.2f}".format(amount_start)}
         Vaste kosten:   €{"{:.2f}".format(surcharge_total)}
         Speelbudget:    €{"{:.2f}".format(amount_available)}""")
@@ -67,11 +68,13 @@ def show_menu_games():
 
 
 def show_saldo(amount_available):
-    print(f"Saldo is €{"{:.2f}".format(amount_available)}")
+    print(f"Uw huidige saldo is €{"{:.2f}".format(amount_available)}")
 
 
-def show_account():
-    print(preference_address, name_first, name_last)
+def show_account(date_birth):
+    print(f"""
+    Account van:    {preference_address}, {name_first}, {name_last}
+    Geboortedatum:  {date_birth}""")
 
 
 def main():
@@ -99,7 +102,7 @@ def main():
                 if menu_games_choice == 1:
                     game_slots()
                 elif menu_games_choice == 2:
-                    game_roulette()
+                    amount_available = roulette.game_roulette(amount_available)
                 elif menu_games_choice == 0:
                     break
                 else:
@@ -107,7 +110,7 @@ def main():
         elif menu_main_choice == 2:
             show_saldo(amount_available)
         elif menu_main_choice == 3:
-            show_account()
+            show_account(date_birth)
         elif menu_main_choice == 0:
             print(f"Bedankt voor het spelen, {name_first}, en tot snel!")
             exit()
