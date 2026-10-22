@@ -1,7 +1,14 @@
 # Verwerkingsopdracht week 3 Martijn de Wild
-# Exit codes: 1 = gebruiker te jong | 2 = te weinig budget
+# Exit codes: 1 = gebruiker te jong | 2 = te weinig budget | 3 = gebruiker verlaat casino
 
-from games import roulette, slots
+AGE_LEGAL = 18
+DATE_YEAR_CURRENT = 2026
+SURCHARGE_ENTRY = 1.50
+SURCHARGE_ADMIN = 0.63
+SURCHARGE_TAX = 3.00
+AMOUNT_WAGER_MIN = 1.00
+
+from games import roulette, slots, blackjack
 
 
 def check_age(date_birth):
@@ -38,7 +45,7 @@ def amount_available_check(amount_start, surcharge_total):
 
 
 def show_welcome_message(amount_start, surcharge_total, amount_available):
-    print("\nOverzicht")
+    print("\nWelkom in het casino. Dit zijn uw gegevens:")
     print("-"*50)
     print(f"""
         {preference_address} {name_last}
@@ -64,6 +71,7 @@ def show_menu_games():
     print("""
         1. Fruitmachine
         2. Roulette
+        3. Blackjack
         0. Terug""")
     return int(input("\nMaak uw keuze: "))
 
@@ -104,6 +112,8 @@ def main():
                     amount_available = slots.game_slots(amount_available)
                 elif menu_games_choice == 2:
                     amount_available = roulette.game_roulette(amount_available)
+                elif menu_games_choice == 3:
+                    amount_available = blackjack.game_blackjack(amount_available)
                 elif menu_games_choice == 0:
                     break
                 else:
@@ -114,16 +124,11 @@ def main():
             show_account(date_birth)
         elif menu_main_choice == 0:
             print(f"Bedankt voor het spelen, {name_first}, en tot snel!")
-            exit()
+            exit(3)
         else:
             print("Dat is geen geldige optie.")
 
 
-AGE_LEGAL = 18
-DATE_YEAR_CURRENT = 2026
-SURCHARGE_ENTRY = 1.50
-SURCHARGE_ADMIN = 0.63
-SURCHARGE_TAX = 3.00
-AMOUNT_WAGER_MIN = 1.00
+
 
 main()
