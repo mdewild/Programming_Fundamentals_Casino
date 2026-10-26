@@ -32,7 +32,7 @@ def spin():
 
 
 def display_result(spin_result):
-    print("\nResultaat: ", end = "")
+    print("\nResultaat: | ", end = "")
     for i in (0, 1, 2):
         if spin_result[i] == 1:
             spin_picture = "DWERG"
@@ -67,7 +67,7 @@ def game_slots(amount_available):
         amount_wager = choose_wager(amount_available)
         amount_available -= amount_wager
         factor_win = determine_win()
-        amount_available += factor_win * amount_available
+        amount_available += factor_win * amount_wager
         print("\nU wint", (f"€ {"{:.2f}".format(factor_win * amount_wager)}.") if factor_win != 0 else "niets.")
         print(f"U heeft nog €{"{:.2f}".format(amount_available)}")
         if amount_available <= 0:

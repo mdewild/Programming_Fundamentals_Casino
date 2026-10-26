@@ -66,11 +66,11 @@ def game_roulette(amount_available):
         if choice_move == 0:
             return(amount_available)
         amount_wager = choose_wager(amount_available)
+        amount_available -= amount_wager
         if determine_win(choice_move):
             amount_available += 2 * amount_wager
             print(f"Gefeliciteerd! Je hebt €{"{:.2f}".format(2*amount_wager)} gewonnen. Je hebt nu €{"{:.2f}".format(amount_available)}.")
         else:
-            amount_available -= amount_wager
             print(f"Helaas! Je hebt nog €{"{:.2f}".format(amount_available)}")
             if amount_available <= 0:
                 exit(2)

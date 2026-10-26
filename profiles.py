@@ -9,6 +9,8 @@ AMOUNT_WAGER_MIN = 1.00
 global players, player_current
 
 
+
+
 def show_welcome_message(amount_start, surcharge_total, amount_available):
     print("\nWelkom in het casino. Dit zijn uw gegevens:")
     print("-"*50)
@@ -57,12 +59,13 @@ def login():
             print("Helaas bent u niet oud genoeg om te spelen.")
             exit(1)
         determine_salutation()
-        players[name_first] = {'name_last': name_last, 'name_first': name_first, 'date_birth': date_birth, 'preference_gender': preference_gender, 'preference_address': preference_address, 'games_played': []}
+        players[name_first] = {'name_last': name_last, 'name_first': name_first, 'date_birth': date_birth, 'preference_gender': preference_gender, 'preference_address' : preference_address, 'games_played': {}}
         amount_start = int(input(f"Geachte {players[player_current]['preference_address']} {players[player_current]['name_last']}, beste {players[player_current]['name_first']}, wat is uw startbudget in euro? €"))
         if not amount_available_check(amount_start, SURCHARGE_TOTAL):
             print("Helaas is dat niet genoeg geld om te spelen.")
             exit(2)
         amount_available = amount_start - SURCHARGE_TOTAL
+        players[name_first]['amount_available'] = amount_available
         show_welcome_message(amount_start, SURCHARGE_TOTAL, amount_available)
         return player_current
 
@@ -70,9 +73,9 @@ def login():
 
 
 #players: {name_first : [name_last, name_first, date_birth, preference_gender, preference_address, amount_available, [games_played]]}
-players = {'Jim' : {'name_last' : 'Kirk', 'name_first' : 'Jim', 'date_birth' : '23-12-1995', 'preference_gender' : 'm', 'preference_address' : 'hr.', 'amount_available' : 17.01, 'games_played' : ['blackjack']},
-'Adira' : {'name_last' : 'Tal', 'name_first' : 'Tal', 'date_birth' : '19-06-2003', 'preference_gender' : 'x', 'preference_address' : 'mx.', 'amount_available' : 10.31, 'games_played' : ['roulette' ,'slots']},
-'Jadzia' : {'name_last' : 'Dax', 'name_first' : 'Jadzia', 'date_birth' : '05-11-1999', 'preference_gender' : 'v', 'preference_address' : 'mevr.', 'amount_available' : 742.05, 'games_played' : ['slots']}
+players = {'Jim' : {'name_last' : 'Kirk', 'name_first' : 'Jim', 'date_birth' : '23-12-1995', 'preference_gender' : 'm', 'preference_address' : 'hr.', 'amount_available' : 17.01, 'games_played' : {'blackjack' : 5}},
+'Adira' : {'name_last' : 'Tal', 'name_first' : 'Adira', 'date_birth' : '19-06-2003', 'preference_gender' : 'x', 'preference_address' : 'mx.', 'amount_available' : 10.31, 'games_played' : {'roulette' : 3, 'slots' : 5}},
+'Jadzia' : {'name_last' : 'Dax', 'name_first' : 'Jadzia', 'date_birth' : '05-11-1999', 'preference_gender' : 'v', 'preference_address' : 'mevr.', 'amount_available' : 742.05, 'games_played' : {'slots' : 31}}
             }
 player_current = ''
 
