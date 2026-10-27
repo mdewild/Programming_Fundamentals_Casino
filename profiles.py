@@ -16,14 +16,14 @@ def show_welcome_message(amount_start, surcharge_total, amount_available):
     print("-"*50)
     print(f"""
         {preference_address} {name_last}
-        Startbudget:    €{"{:.2f}".format(amount_start)}
-        Vaste kosten:   €{"{:.2f}".format(surcharge_total)}
-        Speelbudget:    €{"{:.2f}".format(amount_available)}""")
+        Startbudget:    €{amount_start:.2f}
+        Vaste kosten:   €{SURCHARGE_TOTAL:.2f}
+        Speelbudget:    €{amount_available:.2f}""")
 
 
 
 def amount_available_check(amount_start, surcharge_total):
-    return True if (amount_start - surcharge_total) > AMOUNT_WAGER_MIN else False
+    return True if (amount_start - SURCHARGE_TOTAL) > AMOUNT_WAGER_MIN else False
 
 
 def determine_salutation():
@@ -49,7 +49,7 @@ def login():
     name_first = input('Log in met uw voornaam: ').title()
     player_current = name_first
     if name_first in players:
-        print(f'Welkom terug, {name_first}. Je huidige saldo is €{"{:.2f}".format(players[player_current]['amount_available'])}')
+        print(f'Welkom terug, {name_first}. Je huidige saldo is €{players[player_current]['amount_available']:.2f}')
         return player_current
     else:
         date_birth = input("Om toegelaten te worden moet u 18 jaar of ouder zijn. Wat is uw geboortedatum (dd-mm-yyyy)? ")

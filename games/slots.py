@@ -19,11 +19,11 @@ def choose_move():
 
 
 def choose_wager(amount_available):
-    choice_wager = float(input(f"\nHoeveel wilt u inzetten (u heeft {"{:.2f}".format(amount_available)})? €"))
+    choice_wager = float(input(f"\nHoeveel wilt u inzetten (u heeft {amount_available:.2f})? €"))
     if choice_wager <= amount_available:
         return choice_wager
     else:
-        print(f"Dat is meer dan u beschikbaar heeft (€{"{:.2f}".format(amount_available)})")
+        print(f"Dat is meer dan u beschikbaar heeft (€{amount_available:.2f})")
         choose_wager(amount_available)
 
 
@@ -68,7 +68,7 @@ def game_slots(amount_available):
         amount_available -= amount_wager
         factor_win = determine_win()
         amount_available += factor_win * amount_wager
-        print("\nU wint", (f"€ {"{:.2f}".format(factor_win * amount_wager)}.") if factor_win != 0 else "niets.")
-        print(f"U heeft nog €{"{:.2f}".format(amount_available)}")
+        print(f"\nU wint €{factor_win * amount_wager:.2f}" if factor_win != 0 else "niets.")
+        print(f"U heeft nog €{amount_available:.2f}")
         if amount_available <= 0:
             exit(2)

@@ -49,7 +49,7 @@ def show_menu_games():
 
 
 def show_saldo(amount_available):
-    print(f"Uw huidige saldo is €{"{:.2f}".format(amount_available)}")
+    print(f"Uw huidige saldo is €{amount_available:.2f}")
 
 
 def show_account():

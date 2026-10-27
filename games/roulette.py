@@ -21,11 +21,11 @@ def choose_move():
 
 
 def choose_wager(amount_available):
-    choice_wager = float(input(f"\nHoeveel wilt u inzetten (u heeft {"{:.2f}".format(amount_available)})? €"))
+    choice_wager = float(input(f"\nHoeveel wilt u inzetten (u heeft {amount_available:.2f})? €"))
     if choice_wager <= amount_available:
         return choice_wager
     else:
-        print(f"Dat is meer dan u beschikbaar heeft (€{"{:.2f}".format(amount_available)})")
+        print(f"Dat is meer dan u beschikbaar heeft (€{amount_available:.2f})")
         choose_wager(amount_available)
 
 
@@ -69,8 +69,8 @@ def game_roulette(amount_available):
         amount_available -= amount_wager
         if determine_win(choice_move):
             amount_available += 2 * amount_wager
-            print(f"Gefeliciteerd! Je hebt €{"{:.2f}".format(2*amount_wager)} gewonnen. Je hebt nu €{"{:.2f}".format(amount_available)}.")
+            print(f"Gefeliciteerd! Je hebt €{2*amount_wager:.2f} gewonnen. Je hebt nu €{amount_available:.2f}.")
         else:
-            print(f"Helaas! Je hebt nog €{"{:.2f}".format(amount_available)}")
+            print(f"Helaas! Je hebt nog €{amount_available:.2f}")
             if amount_available <= 0:
                 exit(2)
