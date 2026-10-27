@@ -45,13 +45,9 @@ def check_age(date_birth):
     return True if int(DATE_YEAR_CURRENT) - int(date_year_birth) > AGE_LEGAL else False
 
 
-def login():
-    name_first = input('Log in met uw voornaam: ').title()
-    player_current = name_first
-    if name_first in players:
-        print(f'Welkom terug, {name_first}. Je huidige saldo is €{players[player_current]['amount_available']:.2f}')
-        return player_current
-    else:
+def account_make_new(name_first):
+    if name_first not in players:
+        player_current = name_first
         date_birth = input("Om toegelaten te worden moet u 18 jaar of ouder zijn. Wat is uw geboortedatum (dd-mm-yyyy)? ")
         if check_age(date_birth):
             print("welkom in Casino de Gouden Driehoek, waar geld wél gelukkig maakt!")
@@ -59,8 +55,11 @@ def login():
             print("Helaas bent u niet oud genoeg om te spelen.")
             exit(1)
         determine_salutation()
-        players[name_first] = {'name_last': name_last, 'name_first': name_first, 'date_birth': date_birth, 'preference_gender': preference_gender, 'preference_address' : preference_address, 'games_played': {}}
-        amount_start = int(input(f"Geachte {players[player_current]['preference_address']} {players[player_current]['name_last']}, beste {players[player_current]['name_first']}, wat is uw startbudget in euro? €"))
+        players[name_first] = {'name_last': name_last, 'name_first': name_first, 'date_birth': date_birth,
+                               'preference_gender': preference_gender, 'preference_address': preference_address,
+                               'games_played': {}}
+        amount_start = int(input(
+            f"Geachte {players[player_current]['preference_address']} {players[player_current]['name_last']}, beste {players[player_current]['name_first']}, wat is uw startbudget in euro? €"))
         if not amount_available_check(amount_start, SURCHARGE_TOTAL):
             print("Helaas is dat niet genoeg geld om te spelen.")
             exit(2)
@@ -68,6 +67,20 @@ def login():
         players[name_first]['amount_available'] = amount_available
         show_welcome_message(amount_start, SURCHARGE_TOTAL, amount_available)
         return player_current
+    else:
+        print('Deze spelersnaam is al in gebruik. U kunt naar deze account wisselen of een nieuwe naam kiezen.')
+
+
+
+def login():
+    name_first = input('Log in met uw voornaam: ').title()
+    player_current = name_first
+    if name_first in players:
+        print(f'Welkom terug, {name_first}. Je huidige saldo is €{players[player_current]['amount_available']:.2f}')
+        return player_current
+    else:
+        account_make_new(name_first)
+
 
 
 

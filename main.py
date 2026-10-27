@@ -51,8 +51,42 @@ def show_menu_games():
 def show_saldo(amount_available):
     print(f"Uw huidige saldo is €{amount_available:.2f}")
 
+def account_change_existing(name_first):
+    if name_first in profiles.players:
+        global player_current
+        player_current = name_first
+    else:
+        print('Deze speler bestaat nog niet. Check de spelling of maak een nieuw account aan.')
 
-def show_account():
+
+
+def account_change():
+    global player_current
+    while True:
+        print('\naccount wisselen: 1. bestaand account, 2. nieuw account, 0. annuleren')
+        choice_menu = int(input('Wat wilt u doen? '))
+        match choice_menu:
+            case 0:
+                break
+            case 1:
+                account_change_existing(input('Geef de voornaam van een andere, bestaande account: ').title())
+            case 2:
+                player_current = profiles.account_make_new(input('Geef de voornaam waarmee u de nieuwe account wilt maken: ').title())
+                break
+
+
+def menu_account():
+    while True:
+        print('\nAccountmenu: 1. account bekijken, 2. account wisselen, 0. terug')
+        choice_menu = int(input('Wat wilt u doen? '))
+        match choice_menu:
+            case 0: break
+            case 1: account_show()
+            case 2: account_change()
+
+
+
+def account_show():
     print(f"""
     Account van:    {profiles.players[player_current]['preference_address']} {profiles.players[player_current]['name_first']} {profiles.players[player_current]['name_last']}
     Geboortedatum:  {profiles.players[player_current]['date_birth']}""")
@@ -86,7 +120,7 @@ def main():
         elif menu_main_choice == 2:
             show_saldo(get_amount_available(player_current))
         elif menu_main_choice == 3:
-            show_account()
+            menu_account()
         elif menu_main_choice == 0:
             print(f"Bedankt voor het spelen, {profiles.players[player_current]['name_first']}, en tot snel!")
             exit(3)
